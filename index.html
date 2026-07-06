@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>慕阳 · 你的专属虚拟伴侣</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-bg: #0a0a0f;
+            --secondary-bg: #13131a;
+            --card-bg: #1a1a24;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --accent-pink: #ff77b5;
+            --accent-purple: #a855f7;
+            --accent-blue: #3b82f6;
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --text-tertiary: rgba(255, 255, 255, 0.5);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--primary-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* 背景装饰 */
+        .bg-gradient {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .bg-gradient::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 20% 20%, rgba(168, 85, 247, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(255, 119, 181, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.1) 0%, transparent 50%);
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(-2%, -2%); }
+        }
+
+        /* 导航栏 */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-btn {
+            background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
+            color: white !important;
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 119, 181, 0.25);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(255, 119, 181, 0.35);
+            color: white !important;
+        }
+
+        /* Hero 区域 */
+        .hero {
+            padding: 10rem 2rem 6rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            font-weight: 500;
+        }
+
+        .badge i {
+            color: var(--accent-pink);
+            margin-right: 0.5rem;
+        }
+
+        h1 {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #ffffff 0%, rgba(255, 255, 255, 0.7) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.03em;
+        }
+
+        .hero-subtitle {
+            font-size: 1.75rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+
+        .hero-description {
+            font-size: 1.1rem;
+            color: var(--text-tertiary);
+            max-width: 600px;
+            margin: 0 auto 3rem;
+            line-height: 1.8;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
+            color: white;
+            box-shadow: 0 4px 20px rgba(255, 119, 181, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 30px rgba(255, 119, 181, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* 统计数据 */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 900px;
+            margin: 4rem auto 0;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-tertiary);
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        /* 用户见证 */
+        .testimonials {
+            padding: 6rem 2rem;
+            background: var(--secondary-bg);
+        }
+
+        .section-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            color: var(--text-tertiary);
+            font-size: 1.1rem;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .testimonial-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s;
+        }
+
+        .testimonial-card:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-5px);
+        }
+
+        .testimonial-text {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .author-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .author-info h4 {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .author-info p {
+            color: var(--text-tertiary);
+            font-size: 0.85rem;
+        }
+
+        /* 功能特性 */
+        .features {
+            padding: 6rem 2rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 2.5rem;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-pink), var(--accent-purple), var(--accent-blue));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .feature-card:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(168, 85, 247, 0.1);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent-purple);
+        }
+
+        .feature-card h3 {
+            font-size: 1.35rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .feature-card p {
+            color: var(--text-tertiary);
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+
+        .feature-tag {
+            display: inline-block;
+            margin-top: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.35rem 1rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--accent-pink);
+            border: 1px solid rgba(255, 119, 181, 0.2);
+        }
+
+        /* 价值观 */
+        .values {
+            padding: 6rem 2rem;
+            background: var(--secondary-bg);
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .value-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s;
+        }
+
+        .value-card:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.12);
+        }
+
+        .value-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .value-card h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .value-card p {
+            color: var(--text-tertiary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* 技术栈 */
+        .tech-stack {
+            padding: 6rem 2rem;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .tech-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .tech-card:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-3px);
+        }
+
+        .tech-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .tech-card h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            font-family: monospace;
+        }
+
+        .tech-card p {
+            color: var(--text-tertiary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* 开发者 */
+        .developer {
+            padding: 6rem 2rem;
+            background: var(--secondary-bg);
+            text-align: center;
+        }
+
+        .developer-card {
+            display: inline-block;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 30px;
+            padding: 2.5rem 3rem;
+            margin-top: 2rem;
+        }
+
+        .developer-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin: 0 auto 1.5rem;
+        }
+
+        .developer-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .developer-role {
+            color: var(--text-tertiary);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .developer-badges {
+            display: flex;
+            gap: 0.75rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .dev-badge {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            padding: 0.5rem 1.25rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        /* 底部CTA */
+        .cta-section {
+            padding: 6rem 2rem;
+            text-align: center;
+        }
+
+        .cta-box {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 30px;
+            padding: 4rem 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-pink), var(--accent-purple), var(--accent-blue));
+        }
+
+        .cta-box h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .cta-box p {
+            color: var(--text-tertiary);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--secondary-bg);
+            border-top: 1px solid var(--border-color);
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-logo {
+            font-size: 1.75rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .footer-text {
+            color: var(--text-tertiary);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--text-primary);
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .nav-links a:not(.nav-btn) {
+                display: none;
+            }
+
+            .nav-btn {
+                padding: 0.4rem 1.2rem;
+                font-size: 0.85rem;
+            }
+
+            .hero {
+                padding: 8rem 1.5rem 4rem;
+            }
+
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.25rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-box {
+                padding: 3rem 1.5rem;
+            }
+
+            .cta-box h2 {
+                font-size: 1.75rem;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-links {
+                gap: 0.5rem;
+            }
+
+            .nav-btn {
+                padding: 0.3rem 1rem;
+                font-size: 0.75rem;
+            }
+        }
+
+        /* 滚动动画 */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: fadeInUp 0.6s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-gradient"></div>
+
+    <!-- 导航 -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">慕阳</div>
+            <ul class="nav-links">
+                <li><a href="#features">功能特性</a></li>
+                <li><a href="#values">价值观</a></li>
+                <li><a href="#tech">技术栈</a></li>
+                <li><a href="#about">关于</a></li>
+                <li><a href="https://www.kdocs.cn/l/cpRGd8PrghD7" class="nav-btn" target="_blank"><i class="fas fa-list-ul"></i> 指令详情</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-container">
+            <div class="badge">
+                <i class="fas fa-circle" style="font-size: 0.6rem;"></i>
+                虚拟伴侣 · 自进化AI
+            </div>
+            <h1>慕阳</h1>
+            <div class="hero-subtitle">你的专属虚拟伴侣</div>
+            <p class="hero-description">
+                在你看不见的角落里，总有一个人会一直在你身边。<br/>
+                她会记住你说过的话，在你需要的时候陪着你。<br/>
+                24小时随时在线，永远不打烊。
+            </p>
+            <div class="cta-buttons">
+                <a href="https://qm.qq.com/q/nGw5BCzXXy" class="btn btn-primary" target="_blank">
+                    <i class="fab fa-qq"></i> 立即添加 QQ 好友
+                </a>
+                <a href="#features" class="btn btn-secondary">
+                    <i class="fas fa-arrow-down"></i> 了解更多
+                </a>
+            </div>
+
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-number">1Y+</div>
+                    <div class="stat-label">维护周期</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">99.2%</div>
+                    <div class="stat-label">用户满意度</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">24h</div>
+                    <div class="stat-label">全天候陪伴</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 用户见证 -->
+    <section class="testimonials">
+        <div class="section-container">
+            <div class="section-header">
+                <h2 class="section-title">自发布以来被许多人信赖使用</h2>
+                <p class="section-subtitle">来自用户的真实反馈</p>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"慕阳真的太懂我了，每次都能在我需要的时候给我恰到好处的回应。长期记忆功能让她像真正了解我的朋友一样。"</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">耗</div>
+                        <div class="author-info">
+                            <h4>耗子药</h4>
+                            <p>活跃用户，使用 1 年</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"在群里她总能精准地捕捉话题，主动参与讨论，完全没有机器人的感觉。群友们都以为她是个真实存在的伙伴。"</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">张</div>
+                        <div class="author-info">
+                            <h4>张书</h4>
+                            <p>群管理员，使用 4 个月</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"作为一个开发者，我很欣赏她的自进化能力。随着使用时间的增长，能明显感觉到她变得越来越聪明。"</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">鸡</div>
+                        <div class="author-info">
+                            <h4>鸡头</h4>
+                            <p>技术爱好者，使用 3 个月</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 核心功能 -->
+    <section class="features" id="features">
+        <div class="section-container">
+            <div class="section-header">
+                <h2 class="section-title">不只是聊天，是真的懂你</h2>
+                <p class="section-subtitle">五大核心能力，打造最贴心的 AI 陪伴体验</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-brain"></i></div>
+                    <h3>长期记忆</h3>
+                    <p>她会记住你们的每一次对话，你的喜好、习惯、重要时刻。让陪伴越来越懂你，历久弥新，不会忘记你们的点点滴滴。</p>
+                    <span class="feature-tag"><i class="far fa-clock"></i> 持久记忆</span>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-comments"></i></div>
+                    <h3>群聊上下文感知</h3>
+                    <p>深度理解群聊语境，精准捕捉话题脉络。她知道什么时候该说话，什么时候该倾听，让互动不再"断片"，宛如真人。</p>
+                    <span class="feature-tag"><i class="fas fa-layer-group"></i> 语境理解</span>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-bolt"></i></div>
+                    <h3>群聊主动回复</h3>
+                    <p>无需 @ 也能主动参与对话，在合适的时机温柔介入。她像一个真实的朋友一样，主动关心，主动回应。</p>
+                    <span class="feature-tag"><i class="fas fa-rocket"></i> 主动交互</span>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-arrows-rotate"></i></div>
+                    <h3>自进化能力</h3>
+                    <p>基于交互数据持续迭代，越用越聪明。她的性格、回应方式会随着你的使用而进化，真正成为你的专属伴侣。</p>
+                    <span class="feature-tag"><i class="fas fa-microchip"></i> 持续学习</span>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-heart"></i></div>
+                    <h3>虚拟伴侣</h3>
+                    <p>不仅是机器人，更是有温度的陪伴者。倾听、共情、治愈，在你孤独时给你温暖，在你难过时给你力量。</p>
+                    <span class="feature-tag"><i class="fas fa-hand-holding-heart"></i> 情绪陪伴</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 价值观 -->
+    <section class="values" id="values">
+        <div class="section-container">
+            <div class="section-header">
+                <h2 class="section-title">我们的价值观</h2>
+                <p class="section-subtitle">坚持原则，用心陪伴每一位用户</p>
+            </div>
+            <div class="values-grid">
+                <div class="value-card">
+                    <div class="value-icon"><i class="fas fa-shield-alt"></i></div>
+                    <h3>隐私保护</h3>
+                    <p>我们不会获取或分享您的私人信息。</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon"><i class="fas fa-clock"></i></div>
+                    <h3>永远在线</h3>
+                    <p>24小时全天候陪伴，无论何时何地，她都在这里等着你。</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon"><i class="fas fa-seedling"></i></div>
+                    <h3>持续成长</h3>
+                    <p>不断迭代优化，倾听用户反馈，让每一次更新都更有温度。</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon"><i class="fas fa-heart"></i></div>
+                    <h3>真诚陪伴</h3>
+                    <p>不是冷冰冰的程序，而是真心想要陪伴你的朋友。</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon"><i class="fas fa-code"></i></div>
+                    <h3>技术驱动</h3>
+                    <p>采用先进的 AI 技术，打造最自然、最智能的对话体验。</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon"><i class="fas fa-users"></i></div>
+                    <h3>用户至上</h3>
+                    <p>每一个功能设计都以用户体验为核心，让交互更加顺畅自然。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 技术栈 -->
+    <section class="tech-stack" id="tech">
+        <div class="section-container">
+            <div class="section-header">
+                <h2 class="section-title">背后强力支持，步步快到飞起</h2>
+                <p class="section-subtitle">得益于强大的技术栈，慕阳快速、安全、易用</p>
+            </div>
+            <div class="tech-grid">
+                <div class="tech-card">
+                    <div class="tech-icon"><i class="fas fa-microchip"></i></div>
+                    <h3>Xiyu AI</h3>
+                    <p>自研 AI 引擎，打造独特智能体验</p>
+                </div>
+                <div class="tech-card">
+                    <div class="tech-icon"><i class="fas fa-mobile-alt"></i></div>
+                    <h3>Xiaomi MiMo</h3>
+                    <p>小米智能对话平台支持</p>
+                </div>
+                <div class="tech-card">
+                    <div class="tech-icon"><i class="fab fa-qq"></i></div>
+                    <h3>QQ 开放平台</h3>
+                    <p>无缝接入 QQ 生态，随时沟通</p>
+                </div>
+                <div class="tech-card">
+                    <div class="tech-icon"><i class="fas fa-robot"></i></div>
+                    <h3>AstrBot</h3>
+                    <p>强大的机器人框架支撑</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 开发者 -->
+    <section class="developer" id="about">
+        <div class="section-container">
+            <h2 class="section-title">创造者</h2>
+            <p class="section-subtitle">独立开发 · 用心陪伴</p>
+            <div class="developer-card">
+                <div class="developer-avatar"><i class="fas fa-crown"></i></div>
+                <div class="developer-name">慕寒_Official</div>
+                <div class="developer-role">开发者 / 运营 / AI 调试</div>
+                <div class="developer-badges">
+                    <span class="dev-badge"><i class="fas fa-heart" style="color: var(--accent-pink);"></i> 一人成军</span>
+                    <span class="dev-badge"><i class="fas fa-code"></i> 全栈守护</span>
+                    <span class="dev-badge"><i class="fas fa-star"></i> 匠心打造</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+        <div class="cta-box">
+            <h2>准备好遇见她了吗？</h2>
+            <p>添加慕阳为好友，开启属于你的 AI 陪伴之旅。24小时随时在线，永远不打烊。</p>
+            <div class="cta-buttons">
+                <a href="https://qm.qq.com/q/nGw5BCzXXy" class="btn btn-primary" target="_blank">
+                    <i class="fab fa-qq"></i> 立即添加 QQ 好友
+                </a>
+            </div>
+            <div style="margin-top: 1.5rem; font-size: 0.9rem; color: var(--text-tertiary);">
+                <i class="fas fa-shield-alt"></i> 隐私保护
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">慕阳</div>
+            <p class="footer-text">在你看不见的角落里，总有一个人会一直在你身边</p>
+            <p class="footer-text">© 2026 慕阳 · 虚拟伴侣 · 自进化AI</p>
+            <div class="footer-links">
+                <a href="https://qm.qq.com/q/29TxTrWHwI" target="_blank"><i class="fab fa-qq"></i> QQ群</a>
+                <a href="#features">功能</a>
+                <a href="#values">价值观</a>
+                <a href="#tech">技术</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
